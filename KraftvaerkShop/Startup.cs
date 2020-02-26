@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using KraftvaerkShop.Data;
+using KraftvaerkShop.Models;
 
 namespace KraftvaerkShop
 {
@@ -29,6 +30,7 @@ namespace KraftvaerkShop
 
             services.AddDbContext<KraftvaerkShopContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("KraftvaerkShopContext")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +50,7 @@ namespace KraftvaerkShop
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

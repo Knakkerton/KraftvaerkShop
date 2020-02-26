@@ -14,7 +14,8 @@ namespace KraftvaerkShop.Data
         {
         }
 
-        public DbSet<KraftvaerkShop.Models.Product> Product { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

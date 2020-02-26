@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KraftvaerkShop.Data;
 using KraftvaerkShop.Models;
+using Microsoft.AspNetCore.Session;
 
 namespace KraftvaerkShop.Controllers
 {
@@ -43,6 +44,76 @@ namespace KraftvaerkShop.Controllers
             return View(product);
         }
 
+        //example of simple validation
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Validate(Product product)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToPage("./Index");
+            }
+
+            _context.Product.Add(product);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index");
+        }
+        
+
+        public ViewResult Checkout()
+        {
+            ViewBag.Total = GetTotal();
+            return View( _context.ShoppingCartItems
+                .Include(s => s.Product)
+                .ToList());
+        }
+        public double GetTotal()
+        {
+            var total = _context.ShoppingCartItems
+               .Select(c => c.Product.Price * c.Amount).Sum();
+
+            return total;
+        }
+        public ViewResult Finished()
+        {
+            ViewBag.Message = "Wuhuu";
+            return View("~/Views/Home/Index.cshtml");
+        }
+        public RedirectToActionResult AddToShoppingCart(int productId)
+        {
+            var product = _context.Product
+                .FirstOrDefault(m => m.Id == productId);
+
+            var tempSCI = _context.ShoppingCartItems
+                .FirstOrDefault(s => s.Product.Id == productId);
+
+            if (tempSCI != null)
+            {
+                /*
+                ShoppingCartItem sci = new ShoppingCartItem
+                {
+                    Amount = tempSCI.Amount + 1,
+                    Product = tempSCI.Product
+                };
+                */
+                tempSCI.Amount += 1;
+                _context.Update(tempSCI);
+            }
+            else
+            {
+                ShoppingCartItem sci = new ShoppingCartItem
+                {
+                    Amount = 1,
+                    Product = product
+
+                };
+                _context.Add(sci);
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        /*
         // GET: Products/Create
         public IActionResult Create()
         {
@@ -149,5 +220,6 @@ namespace KraftvaerkShop.Controllers
         {
             return _context.Product.Any(e => e.Id == id);
         }
+        */
     }
 }

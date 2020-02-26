@@ -1,0 +1,58 @@
+﻿@model IEnumerable<KraftvaerkShop.Models.ShoppingCartItem>
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h1>Checkout</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Amount
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Price
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @item.Product.Name.ToString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Price)
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2" class="text-right">Total:</td>
+            <td class="text-left">
+                @ViewBag.Total       
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<a class="btn btn-success" asp-controller="Products" asp-action="Finished">Check out</a>
+
+</br>
+</br>
+
+<form method="post" action="/Products/Validate">
+    <input type="text" id="name" name="name" value="Boss" />
+    <input type="text" id="price" name="price" value=3 />
+    <input name="__RequestVerificationToken" type="hidden" value="<removed for brevity>">
+    <input type="submit" />
+</form>
