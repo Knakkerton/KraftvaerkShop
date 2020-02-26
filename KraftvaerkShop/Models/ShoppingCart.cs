@@ -24,15 +24,9 @@ namespace KraftvaerkShop.Models
 
         public static ShoppingCart GetCart(IServiceProvider services)
         {
-            
-            //ISession session = services.GetRequiredService<IHttpContextAccessor>()?
-            //    .HttpContext.Session;
-
             var context = services.GetService<KraftvaerkShopContext>();
-            //int cartId = session.GetInt32("CartId") ?? Guid.NewGuid().GetHashCode();
+            
             int cartId = 5;
-
-            //session.SetInt32("CartId", cartId);
 
             return new ShoppingCart(context) { ShoppingCartId = cartId };
         }
