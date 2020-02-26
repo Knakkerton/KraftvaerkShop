@@ -43,6 +43,12 @@ namespace KraftvaerkShop.Controllers
             return View(product);
         }
 
+        public IActionResult Checkout()
+        {
+            return View();
+        }
+
+        /*
         // GET: Products/Create
         public IActionResult Create()
         {
@@ -149,5 +155,6 @@ namespace KraftvaerkShop.Controllers
         {
             return _context.Product.Any(e => e.Id == id);
         }
+        */
     }
 }
